@@ -23,3 +23,13 @@ jobs:
       - name: weread sync
         run: |
           python weread.py "${{secrets.WEREAD_COOKIE}}" "${{secrets.NOTION_TOKEN}}" "${{secrets.NOTION_DATABASE_ID}}" 
+      - name: Update sync timestamp
+        run: |
+          echo "Last synced at $(date)" > last_sync.txt
+      - name: Commit and push changes
+        uses: EndBug/add-and-commit@v7
+        with:
+          author_name: 'GitHub Action'
+          author_email: 'action@github.com'
+          message: 'Automated sync and update timestamp'
+          add: 'last_sync.txt'
